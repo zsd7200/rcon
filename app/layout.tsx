@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from "react-hot-toast";
 import NextTopLoader from 'nextjs-toploader';
+import Sidebar from '@/components/layout/Sidebar';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
             color="#98C767" 
             showSpinner={false}
           />
+          <Sidebar />
           {children}
         </ThemeProvider>
       </body>

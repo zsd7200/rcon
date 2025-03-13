@@ -1,7 +1,6 @@
 import { db } from "@/db/Database";
 
 export const migrate = () => {
-  console.log('starting migrations');
   db.serialize(() => {
    db.run(
     `
