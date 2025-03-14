@@ -15,24 +15,20 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.formData();
-  const data: HistoryRow = {
-    server_id:  body.get('server_id') as string,
-    command:    body.get('command') as string,
-  };
+  const body: HistoryRow = await req.json();
 
-  if (!data.command) {
+  if (!body.command) {
     return NextResponse.json({status: 'bad', msg: 'Missing command.'}, {status: 500});
   }
 
   const query = `
-    INSERT INTO history(server_id, command)
-    VALUES(?, ?)
+    INSERT INTO history(server_id, command, response)
+    VALUES(?, ?, ?)
   `;
-  const values = [data.server_id, data.command];
+  const values = [body.server_id, body.command, body.response];
   try {
     const res = await dbPost(query, values);
-    return NextResponse.json({status: 'good', msg: `Successfully added Command: ${data.command} to History for Server with ID: ${data.server_id}.`}, {status: 200});
+    return NextResponse.json({status: 'good', msg: `Successfully added Command: ${body.command} to History for Server with ID: ${body.server_id}.`}, {status: 200});
   } catch (err) {
     return NextResponse.json({status: 'bad', msg: err}, {status: 500});
   }

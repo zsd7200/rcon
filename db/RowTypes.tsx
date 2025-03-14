@@ -3,6 +3,7 @@ export type ServersRow = {
   name: string,
   host: string,
   port: string,
+  password: string,
 }
 
 export type CommandsRow = {
@@ -16,5 +17,6 @@ export type HistoryRow = {
   id?: number,
   server_id: string,
   command: string,
+  response: string,
   time?: string,
 }

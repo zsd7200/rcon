@@ -8,7 +8,8 @@ export const migrate = () => {
         id          INTEGER PRIMARY KEY AUTOINCREMENT,
         name        TEXT NOT NULL,
         host        TEXT NOT NULL,
-        port        INTEGER NOT NULL
+        port        INTEGER NOT NULL,
+        password    TEXT NOT NULL
       );
     `,
     (err: Error) => {
@@ -41,6 +42,7 @@ export const migrate = () => {
         id          INTEGER PRIMARY KEY AUTOINCREMENT,
         server_id   INTEGER NOT NULL,
         command     TEXT NOT NULL,
+        response    TEXT NOT NULL,
         time        DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (server_id) REFERENCES servers(id) ON DELETE CASCADE
       );

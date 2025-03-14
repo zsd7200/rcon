@@ -9,7 +9,7 @@ import { faAnglesRight, faPlus, faTrash, faXmark } from '@fortawesome/free-solid
 import { useTheme } from 'next-themes';
 import { getToastStyles } from '@/components/utils/ToastStyles';
 import toast from "react-hot-toast";
-import Loading from '../utils/Loading';
+import Loading from '@/components/utils/Loading';
 
 export default function Sidebar() {
   const [servers, setServers] = useState<Array<ServersRow>>([]);
