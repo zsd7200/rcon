@@ -25,7 +25,7 @@ export const migrate = () => {
         server_id   INTEGER NOT NULL,
         name        TEXT NOT NULL,
         command     TEXT NOT NULL,
-        FOREIGN KEY (server_id) REFERENCES servers(id)
+        FOREIGN KEY (server_id) REFERENCES servers(id) ON DELETE CASCADE
       );
     `,
     (err: Error) => {
@@ -42,7 +42,7 @@ export const migrate = () => {
         server_id   INTEGER NOT NULL,
         command     TEXT NOT NULL,
         time        DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (server_id) REFERENCES servers(id)
+        FOREIGN KEY (server_id) REFERENCES servers(id) ON DELETE CASCADE
       );
     `,
     (err: Error) => {

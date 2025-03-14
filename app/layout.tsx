@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from "react-hot-toast";
 import NextTopLoader from 'nextjs-toploader';
-import Sidebar from '@/components/layout/Sidebar';
+import Header from '@/components/layout/Header';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 dark:bg-gray-900`}
       >
         <Toaster 
           position="bottom-right"
@@ -39,7 +39,7 @@ export default function RootLayout({
             color="#98C767" 
             showSpinner={false}
           />
-          <Sidebar />
+          <Header />
           {children}
         </ThemeProvider>
       </body>

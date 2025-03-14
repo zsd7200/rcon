@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { dbGet, dbPost } from '@/db/Database';
 import { ServersRow } from '@/db/RowTypes';
+import { placeholders } from '@/components/utils/FormPlaceholders';
 
 export async function GET(req: NextRequest) {
   const query = `
@@ -22,16 +23,16 @@ export async function POST(req: NextRequest) {
     port: body.get('port') as string,
   };
 
-  if (!data.host) {
-    return NextResponse.json({status: 'bad', msg: 'Missing host.'}, {status: 500});
+  if (!data.name || data.name.length === 0) {
+    data.name = placeholders.name;
   }
 
-  if (!data.name) {
-    data.name = data.host;
+  if (!data.host || data.host.length === 0) {
+    data.host = placeholders.host;
   }
 
-  if (!data.port || Number.isNaN(parseInt(data.port))) {
-    data.port = '25575';
+  if (!data.port || data.port.length === 0 || Number.isNaN(parseInt(data.port))) {
+    data.port = placeholders.port;
   }
 
   const query = `
