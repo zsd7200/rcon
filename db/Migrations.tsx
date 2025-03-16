@@ -1,6 +1,9 @@
-import { db } from "@/db/Database";
+'use server';
 
-export const migrate = () => {
+import { dbConnect } from "@/db/Database";
+
+export const migrate = async () => {
+  const db = await dbConnect();
   db.serialize(() => {
    db.run(
     `
@@ -16,7 +19,7 @@ export const migrate = () => {
      if (err) {
       console.error(err.message);
      }
-     console.log("servers table created successfully.");
+     console.log("servers table migration run successfully.");
     }
    );
    db.run(
@@ -33,7 +36,7 @@ export const migrate = () => {
      if (err) {
       console.error(err.message);
      }
-     console.log("commands table created successfully.");
+     console.log("commands table migration run successfully.");
     }
    );
    db.run(
@@ -51,7 +54,7 @@ export const migrate = () => {
      if (err) {
       console.error(err.message);
      }
-     console.log("history table created successfully.");
+     console.log("history table migration run successfully.");
     }
    );
   });
