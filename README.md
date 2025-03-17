@@ -1,6 +1,10 @@
-# [RCON Web GUI]
+# RCON Web GUI
 
-A Web GUI to interface with RCON game servers. WIP.
+A Web GUI to interface with RCON game servers. 
+
+Allows users to add multiple RCON servers and send commands. Displays responses, keeps a history of commands, and allows adding commands as favorites.
+
+WIP.
 
 ## Getting Started
 Create a `.env` with the following entries:

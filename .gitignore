@@ -43,3 +43,6 @@ next-env.d.ts
 
 # sqlite db
 servers.db
+
+# local docker-compose
+docker-compose.yml
