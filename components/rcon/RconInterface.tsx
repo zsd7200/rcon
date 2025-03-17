@@ -37,11 +37,13 @@ export default function RconInterface({ server_id, host, port, password }: RconP
   const currentTheme = theme === 'system' ? systemTheme : theme;
   const [responseList, setResponseList] = useState<Array<ResponseType>>([]);
   const [favoritesList, setFavoritesList] = useState<Array<FavoritesRow>>([]);
+  const [historyList, setHistoryList] = useState<Array<HistoryRow>>([]);
+  const [historyIndex, setHistoryIndex] = useState<number>(0);
   const [pending, setPending] = useState<boolean>(false);
   const [currCmd, setCurrCmd] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
 
-  const sendCommand = async (command: string) => {
+  const sendCommand = async (command: string, log: boolean = true) => {
     setPending(true);
     setCurrCmd(command);
     const rconConnectObject: RconConnectObjectType = {
@@ -63,13 +65,19 @@ export default function RconInterface({ server_id, host, port, password }: RconP
     }
 
     try {
-      const historyObject: HistoryRow = {
-        server_id: '' + server_id,
-        command: command,
-        response: (rconRes.msg.length > 0) ? rconRes.msg : 'no response',
-      }
+      if (log) {
+        const historyObject: HistoryRow = {
+          server_id: '' + server_id,
+          command: command,
+          response: (rconRes.msg.length > 0) ? rconRes.msg : 'no response',
+        }
 
-      await postData('api/history', historyObject);
+        await postData('api/history', historyObject);
+        const tempHistList = historyList;
+        tempHistList.push(historyObject);
+        setHistoryList(tempHistList);
+        setHistoryIndex(tempHistList.length - 1);
+      }
       setPending(false);
       setCurrCmd('');
       return { status: 'good', msg: rconRes.msg };
@@ -96,10 +104,26 @@ export default function RconInterface({ server_id, host, port, password }: RconP
       }
     }
 
+    const getHistoryList = async () => {
+      try {
+        const data: Array<HistoryRow> = await getData(`api/history/server/${server_id}/10`);
+        const reversedData: Array<HistoryRow> = data.reverse(); // need to reverse because API sends it in opposite order of what we want
+        setHistoryList(reversedData);
+        setHistoryIndex(reversedData.length - 1);
+        return reversedData;
+      } catch (e) {
+        const err = e as Error;
+        const res = JSON.parse(err.message) as DbResponse;
+        console.log(res.msg);
+        toast(`Error getting History List: ${res.msg}`, getToastStyles('⚠️', currentTheme));
+        return [];
+      }
+    }
+
     const initCmdList = async () => {
       const tempFavList = await getFavoritesList(); // favoritesList isn't populated, so we'll use this instead
       const tempResList = [];
-      const data = await sendCommand('list');
+      const data = await sendCommand('list', false);
       if (data.status !== 'good') {
         toast(`Error connecting to server via RCON. Error code: ${JSON.parse(data.msg).code}`, getToastStyles('⚠️', currentTheme));
         console.log('aaa');
@@ -116,11 +140,27 @@ export default function RconInterface({ server_id, host, port, password }: RconP
     }
 
     initCmdList();
+    getHistoryList();
   }, []);
+
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+  
+    const target = e.target as HTMLInputElement;
+    target.value = historyList[historyIndex].command;
+    let newIndex = historyIndex;
+    if (e.key === 'ArrowUp' && newIndex - 1 >= 0) {
+      newIndex--;
+    } else if (e.key === 'ArrowDown' && newIndex + 1 < historyList.length) {
+      newIndex++;
+    }
+    
+    if (newIndex !== historyIndex) setHistoryIndex(newIndex);
+  }
 
   const handleKeyUp = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return;
-
+    
     const target = e.target as HTMLInputElement;
     const response = await sendCommand(target.value);
     const tempResList = [...responseList];
@@ -196,7 +236,7 @@ export default function RconInterface({ server_id, host, port, password }: RconP
       ))}
       <div className="flex justify-between">
         <label htmlFor="host">Enter Command: </label>
-        <input className="pl-2 w-50" name="host" id="host" placeholder="list" onKeyUp={handleKeyUp} disabled={disabled} />
+        <input className="pl-2 w-50" name="host" id="host" placeholder="list" onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} disabled={disabled} autoComplete="off" />
       </div>
       {pending && 
         <Loading>
