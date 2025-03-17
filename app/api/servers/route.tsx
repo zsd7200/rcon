@@ -4,7 +4,7 @@ import { ServersRow } from '@/db/RowTypes';
 import { placeholders } from '@/components/utils/FormPlaceholders';
 import { encrypt } from '@/components/utils/PasswordOperations';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const query = `
     SELECT * from servers
   `;
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const res = await dbGet(query);
     return NextResponse.json(res, {status: 200});
   } catch (err) {
-    return NextResponse.json({status: 'bad', msg: err}, {status: 400});
+    return NextResponse.json({status: 'bad', msg: err}, {status: 500});
   }
 }
 
@@ -49,9 +49,9 @@ export async function POST(req: NextRequest) {
   `;
   const values = [data.name, data.host, data.port, data.password];
   try {
-    const res = await dbPost(query, values);
+    await dbPost(query, values);
     return NextResponse.json({status: 'good', msg: `Successfully added Server with name: ${data.name}.`}, {status: 200});
   } catch (err) {
-    return NextResponse.json({status: 'bad', msg: err}, {status: 400});
+    return NextResponse.json({status: 'bad', msg: err}, {status: 500});
   }
 }

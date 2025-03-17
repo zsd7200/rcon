@@ -6,7 +6,7 @@ export type ServersRow = {
   password: string,
 }
 
-export type CommandsRow = {
+export type FavoritesRow = {
   id?: number,
   server_id: string,
   name: string,
@@ -19,4 +19,11 @@ export type HistoryRow = {
   command: string,
   response: string,
   time?: string,
+}
+
+export type AliasRow = {
+  id?: number,
+  server_id?: string,
+  command: string,
+  alias: string,
 }

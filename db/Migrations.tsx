@@ -19,12 +19,12 @@ export const migrate = async () => {
      if (err) {
       console.error(err.message);
      }
-     console.log("servers table migration run successfully.");
+     console.log('servers table migration run successfully.');
     }
    );
    db.run(
     `
-      CREATE TABLE IF NOT EXISTS commands (
+      CREATE TABLE IF NOT EXISTS favorites (
         id          INTEGER PRIMARY KEY AUTOINCREMENT,
         server_id   INTEGER NOT NULL,
         name        TEXT NOT NULL,
@@ -36,7 +36,7 @@ export const migrate = async () => {
      if (err) {
       console.error(err.message);
      }
-     console.log("commands table migration run successfully.");
+     console.log('favorites table migration run successfully.');
     }
    );
    db.run(
@@ -54,7 +54,24 @@ export const migrate = async () => {
      if (err) {
       console.error(err.message);
      }
-     console.log("history table migration run successfully.");
+     console.log('history table migration run successfully.');
+    }
+   );
+   db.run(
+    `
+      CREATE TABLE IF NOT EXISTS alias (
+        id          INTEGER PRIMARY KEY AUTOINCREMENT,
+        server_id   INTEGER,
+        command     TEXT NOT NULL,
+        alias       TEXT NOT NULL,
+        FOREIGN KEY (server_id) REFERENCES servers(id) ON DELETE CASCADE
+      );
+    `,
+    (err: Error) => {
+     if (err) {
+      console.error(err.message);
+     }
+     console.log('alias table migration run successfully.');
     }
    );
   });

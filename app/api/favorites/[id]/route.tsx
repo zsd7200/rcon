@@ -12,7 +12,7 @@ export async function GET(req: NextRequest, props: { params: Params }) {
   }
 
   const query = `
-    SELECT * from commands
+    SELECT * from favorites
     WHERE id=${id}
   `;
   try {
@@ -32,14 +32,14 @@ export async function DELETE(req: NextRequest, props: { params: Params }) {
   }
 
   const query = `
-    DELETE FROM commands
+    DELETE FROM favorites
     WHERE id=?
   `;
   const values = [id];
 
   try {
-    const res = await dbPost(query, values);
-    return NextResponse.json({status: 'good', msg: `Successfully deleted Command with ID: ${id}.`}, {status: 200});
+    await dbPost(query, values);
+    return NextResponse.json({status: 'good', msg: `Successfully deleted Favorite with ID: ${id}.`}, {status: 200});
   } catch (err) {
     return NextResponse.json({status: 'bad', msg: err}, {status: 400});
   }

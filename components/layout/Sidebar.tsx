@@ -41,7 +41,7 @@ export default function Sidebar() {
   }
 
   const checkboxInputHandler = (id: number, checked: boolean) => {
-    let tempIds = deleteIds;
+    const tempIds = deleteIds;
 
     if (tempIds.includes(id) && !checked) {
       tempIds.splice(tempIds.indexOf(id), 1);
@@ -68,9 +68,10 @@ export default function Sidebar() {
     setIsLoading(true);
     for (let i = 0; i < deleteIds.length; i++) {
       try {
-        const response = await deleteData(`api/servers/${deleteIds[i]}`);
+        await deleteData(`api/servers/${deleteIds[i]}`);
       } catch (e) {
         badIds.push(deleteIds[i]);
+        console.log(e);
         continue;
       }
     }

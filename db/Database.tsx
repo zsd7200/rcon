@@ -2,7 +2,7 @@
 
 import sqlite3 from "sqlite3";
 import path from "node:path";
-import { ServersRow, CommandsRow, HistoryRow } from "@/db/RowTypes";
+import { ServersRow, FavoritesRow, HistoryRow, AliasRow } from "@/db/RowTypes";
 
 const dbConnect = async () => {
   const filePath = path.join(process.cwd(), 'servers.db');
@@ -23,7 +23,7 @@ const dbConnect = async () => {
 const dbGet = async (query: string) => {
   const db = await dbConnect();
   return await new Promise((resolve, reject) => {
-    db.all(query, (err: Error, row: Array<ServersRow | CommandsRow | HistoryRow>) => {
+    db.all(query, (err: Error, row: Array<ServersRow | FavoritesRow | HistoryRow | AliasRow>) => {
       if (err) {
         console.error(err);
         return reject(err);

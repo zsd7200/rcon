@@ -43,7 +43,7 @@ export default function Header() {
               <FontAwesomeIcon icon={(showMenu) ? faXmark : faBars} className="h-[25px] hover:text-[#98C767] active:text-[#7FA656] transition"/>
             </button>
           </div>
-          <h1 className="text-3xl font-bold text-gray-600 dark:text-gray-100">RCON Web GUI</h1>
+          <h1 className="text-3xl font-bold text-gray-600 dark:text-gray-100 select-none">RCON Web GUI</h1>
         </div>
         <nav className="flex">
           <ul className="flex gap-[15px] justify-end items-center text-gray-600 dark:text-gray-100">

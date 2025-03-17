@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { dbGet, dbPost } from '@/db/Database';
-import { HistoryRow } from '@/db/RowTypes';
+import { FavoritesRow } from '@/db/RowTypes';
 
 export async function GET() {
   const query = `
-    SELECT * from history
+    SELECT * from favorites
   `;
   try {
     const res = await dbGet(query);
@@ -15,20 +15,24 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const body: HistoryRow = await req.json();
+  const body: FavoritesRow = await req.json();
 
   if (!body.command) {
     return NextResponse.json({status: 'bad', msg: 'Missing command.'}, {status: 400});
   }
 
+  if (!body.name) {
+    body.name = body.command;
+  }
+
   const query = `
-    INSERT INTO history(server_id, command, response)
+    INSERT INTO favorites(server_id, name, command)
     VALUES(?, ?, ?)
   `;
-  const values = [body.server_id, body.command, body.response];
+  const values = [body.server_id, body.name, body.command];
   try {
     await dbPost(query, values);
-    return NextResponse.json({status: 'good', msg: `Successfully added Command: ${body.command} to History for Server with ID: ${body.server_id}.`}, {status: 200});
+    return NextResponse.json({status: 'good', msg: `Successfully added Favorite with name: ${body.name} to Server with ID: ${body.server_id}.`}, {status: 200});
   } catch (err) {
     return NextResponse.json({status: 'bad', msg: err}, {status: 400});
   }

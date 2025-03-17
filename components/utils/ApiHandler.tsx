@@ -13,13 +13,14 @@ export async function getData(endpoint: string) {
   });
 
   if (!res.ok) {
-    throw new Error(`${res.status} returned from ${url}`);
+    console.error(`${res.status} returned from ${url}`);
+    throw new Error(JSON.stringify(await res.json()));
   }
 
   return await res.json();
 }
 
-export async function postData(endpoint: string, body: FormData | Object | string) {
+export async function postData(endpoint: string, body: FormData | object | string) {
   const base = 'http://localhost:25545/';
   const url = base + endpoint;
 
@@ -29,7 +30,8 @@ export async function postData(endpoint: string, body: FormData | Object | strin
   });
 
   if (!res.ok) {
-    throw new Error(`${res.status} returned from ${url}`);
+    console.error(`${res.status} returned from ${url}`);
+    throw new Error(JSON.stringify(await res.json()));
   }
 
   return await res.json();
@@ -44,7 +46,8 @@ export async function deleteData(endpoint: string) {
   });
 
   if (!res.ok) {
-    throw new Error(`${res.status} returned from ${url}`);
+    console.error(`${res.status} returned from ${url}`);
+    throw new Error(JSON.stringify(await res.json()));
   }
 
   return await res.json();
