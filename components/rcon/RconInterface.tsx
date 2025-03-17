@@ -9,7 +9,6 @@ import toast from "react-hot-toast";
 import Loading from '@/components/utils/Loading';
 import { postData } from '@/components/utils/ApiHandler';
 import { DbResponse } from '@/components/utils/ApiHandler';
-import { GSP_NO_RETURNED_VALUE } from 'next/dist/lib/constants';
 import { HistoryRow } from '@/db/RowTypes';
 
 type RconProps = {
@@ -28,8 +27,12 @@ export type RconConnectObjectType = {
 
 export default function RconInterface({ server_id, host, port, password }: RconProps) {
   const [responseList, setResponseList] = useState<Array<string>>([]);
+  const [pending, setPending] = useState<boolean>(false);
+  const [currCmd, setCurrCmd] = useState<string>('');
 
   const sendCommand = async (command: string) => {
+    setPending(true);
+    setCurrCmd(command);
     const rconConnectObject: RconConnectObjectType = {
       host: host,
       port: port,
@@ -47,8 +50,13 @@ export default function RconInterface({ server_id, host, port, password }: RconP
       }
 
       const histRes: DbResponse = await postData('api/history', historyObject);
+      setPending(false);
+      setCurrCmd('');
       return rconRes.msg;
     } catch (e) {
+      setPending(false);
+      setCurrCmd('');
+      console.log(e);
       return 'error';
     }
   }
@@ -89,6 +97,14 @@ export default function RconInterface({ server_id, host, port, password }: RconP
         <label htmlFor="host">Enter Command: </label>
         <input className="pl-2 w-50" name="host" id="host" placeholder="list" onKeyUp={handleKeyUp} />
       </div>
+      {pending && 
+        <Loading>
+          <div className="flex flex-col mt-8 text-xs">
+            <span className="italic">Sending command:</span>
+            <span>/{currCmd}</span>
+          </div>
+        </Loading>
+      }
     </div>
   );
 }

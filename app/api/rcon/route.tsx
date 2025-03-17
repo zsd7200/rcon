@@ -8,6 +8,11 @@ export async function POST(req: NextRequest) {
 
   try {
     await server.authenticate(body.password);
+  } catch (err) {
+    return NextResponse.json({status: 'bad', msg: err}, {status: 403});
+  }
+
+  try {
     let status = await server.execute(body.command);
     return NextResponse.json({status: 'good', msg: status}, {status: 200});
   } catch (err) {

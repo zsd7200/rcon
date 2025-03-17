@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     const res = await dbGet(query);
     return NextResponse.json(res, {status: 200});
   } catch (err) {
-    return NextResponse.json({status: 'bad', msg: err}, {status: 500});
+    return NextResponse.json({status: 'bad', msg: err}, {status: 400});
   }
 }
 
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   };
 
   if (!data.command) {
-    return NextResponse.json({status: 'bad', msg: 'Missing command.'}, {status: 500});
+    return NextResponse.json({status: 'bad', msg: 'Missing command.'}, {status: 400});
   }
 
   if (!data.name) {
@@ -39,6 +39,6 @@ export async function POST(req: NextRequest) {
     const res = await dbPost(query, values);
     return NextResponse.json({status: 'good', msg: `Successfully added Command with name: ${data.name} to Server with ID: ${data.server_id}.`}, {status: 200});
   } catch (err) {
-    return NextResponse.json({status: 'bad', msg: err}, {status: 500});
+    return NextResponse.json({status: 'bad', msg: err}, {status: 400});
   }
 }

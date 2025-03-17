@@ -8,7 +8,7 @@ export async function GET(req: NextRequest, props: { params: Params }) {
   const id: string = params.id;
 
   if (!id) {
-    return NextResponse.json({status: 'bad', msg: 'No ID specified.'}, {status: 500});
+    return NextResponse.json({status: 'bad', msg: 'No ID specified.'}, {status: 400});
   }
 
   const query = `
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, props: { params: Params }) {
     const res = await dbGet(query);
     return NextResponse.json(res, {status: 200});
   } catch (err) {
-    return NextResponse.json({status: 'bad', msg: err}, {status: 500});
+    return NextResponse.json({status: 'bad', msg: err}, {status: 400});
   }
 }
 
@@ -28,7 +28,7 @@ export async function DELETE(req: NextRequest, props: { params: Params }) {
   const id: string = params.id;
 
   if (!id) {
-    return NextResponse.json({status: 'bad', msg: 'No ID specified.'}, {status: 500});
+    return NextResponse.json({status: 'bad', msg: 'No ID specified.'}, {status: 400});
   }
 
   const query = `
@@ -41,6 +41,6 @@ export async function DELETE(req: NextRequest, props: { params: Params }) {
     const res = await dbPost(query, values);
     return NextResponse.json({status: 'good', msg: `Successfully deleted Command with ID: ${id}.`}, {status: 200});
   } catch (err) {
-    return NextResponse.json({status: 'bad', msg: err}, {status: 500});
+    return NextResponse.json({status: 'bad', msg: err}, {status: 400});
   }
 }

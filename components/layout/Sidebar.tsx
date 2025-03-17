@@ -10,6 +10,7 @@ import { useTheme } from 'next-themes';
 import { getToastStyles } from '@/components/utils/ToastStyles';
 import toast from "react-hot-toast";
 import Loading from '@/components/utils/Loading';
+import { events, eventEmitter } from '@/components/utils/EventEmitter';
 
 export default function Sidebar() {
   const [servers, setServers] = useState<Array<ServersRow>>([]);
@@ -30,6 +31,9 @@ export default function Sidebar() {
 
     getServers();
     setRefresh(false);
+
+    eventEmitter.addEventListener(events.sidebar, getServers);
+    return () => eventEmitter.removeEventListener(events.sidebar, getServers);
   }, [refresh]);
 
   const deleteModeHandler = () => {
@@ -82,7 +86,7 @@ export default function Sidebar() {
   }
 
   return (
-    <div className="inline-flex px-2 py-4 max-w-64 flex-col border-r-1 border-b-1 rounded-br-lg border-gray-200 dark:border-gray-700">
+    <div className="relative z-100 bg-gray-100 dark:bg-gray-900 inline-flex px-2 py-4 max-w-64 flex-col border-r-1 border-b-1 rounded-br-lg border-gray-200 dark:border-gray-700">
       <Link href={`/server/add`} className="hover:bg-[#98C767] active:bg-[#7FA656] py-2 px-2 my-px rounded-md">
         <div className="flex justify-between items-center gap-8">
           Add Server

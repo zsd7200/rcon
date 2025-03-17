@@ -15,8 +15,8 @@ export const envVariablesCheck = async () => {
     console.warn('');
     console.warn(
 `
-CRYPTO_KEY=${crypto.randomUUID()}
-CRYPTO_SALT=${crypto.randomUUID()}
+CRYPTO_KEY=${process.env.CRYPTO_KEY ?? crypto.randomUUID()}
+CRYPTO_SALT=${process.env.CRYPTO_SALT ?? crypto.randomUUID()}
 `
   );
     console.warn('');

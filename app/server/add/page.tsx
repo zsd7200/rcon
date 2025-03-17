@@ -6,6 +6,7 @@ import { DbResponse, postData } from '@/components/utils/ApiHandler';
 import { useTheme } from 'next-themes';
 import { getToastStyles } from '@/components/utils/ToastStyles';
 import toast from "react-hot-toast";
+import { events, eventEmitter } from '@/components/utils/EventEmitter';
 
 export default function ServerAdd() {
   const { systemTheme, theme } = useTheme();
@@ -33,8 +34,10 @@ export default function ServerAdd() {
     setPending(true);
     const data: DbResponse = await postData('api/servers', formData);
     setPending(false);
+    setName(placeholders.name);
     if (data.status === 'good') {
       toast('Added server!', getToastStyles('✅', currentTheme));
+      eventEmitter.dispatchEvent(new Event(events.sidebar));
       return;
     }
 

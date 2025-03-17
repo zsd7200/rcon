@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     const res = await dbGet(query);
     return NextResponse.json(res, {status: 200});
   } catch (err) {
-    return NextResponse.json({status: 'bad', msg: err}, {status: 500});
+    return NextResponse.json({status: 'bad', msg: err}, {status: 400});
   }
 }
 
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
   const body: HistoryRow = await req.json();
 
   if (!body.command) {
-    return NextResponse.json({status: 'bad', msg: 'Missing command.'}, {status: 500});
+    return NextResponse.json({status: 'bad', msg: 'Missing command.'}, {status: 400});
   }
 
   const query = `
@@ -30,6 +30,6 @@ export async function POST(req: NextRequest) {
     const res = await dbPost(query, values);
     return NextResponse.json({status: 'good', msg: `Successfully added Command: ${body.command} to History for Server with ID: ${body.server_id}.`}, {status: 200});
   } catch (err) {
-    return NextResponse.json({status: 'bad', msg: err}, {status: 500});
+    return NextResponse.json({status: 'bad', msg: err}, {status: 400});
   }
 }
