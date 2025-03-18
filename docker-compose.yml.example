@@ -9,4 +9,6 @@ services:
       CRYPTO_SALT: # set this to random string
     ports:
       - "25545:25545"
+    volumes:
+      - ./data:/app/data
     restart: unless-stopped
