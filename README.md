@@ -23,7 +23,7 @@ git clone https://github.com/zsd7200/rcon.git
     - e.g. "1234:25545" would allow connection on `http://localhost:1234` rather than `http://localhost:25545`.
 5. Navigate to this repository's directory and run (may take some time on first run):
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 6. Open [http://localhost:25545](http://localhost:25545) with your browser to see the result.
 
@@ -74,3 +74,5 @@ A: The host's RCON port is not accessible. Is your port forwarded?
 
 A: You may have entered the server's port rather than the RCON port (or a different incorrect port).
 Try adding the server again and double-checking that the port entered is the RCON port and not the server port.
+
+If you experience any other issues, please create an issue on this repository and I will see what I can do.
