@@ -25,7 +25,7 @@ export default function Sidebar() {
 
   useEffect(() => {
     const getServers = async () => {
-      const data = await getData('api/servers');
+      const data = await getData('/api/servers');
       setServers(data);
     };
 
@@ -68,7 +68,7 @@ export default function Sidebar() {
     setIsLoading(true);
     for (let i = 0; i < deleteIds.length; i++) {
       try {
-        await deleteData(`api/servers/${deleteIds[i]}`);
+        await deleteData(`/api/servers/${deleteIds[i]}`);
       } catch (e) {
         badIds.push(deleteIds[i]);
         console.log(e);

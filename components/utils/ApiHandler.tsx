@@ -3,10 +3,7 @@ export type DbResponse = {
   msg: string,
 };
 
-export async function getData(endpoint: string) {
-  const base = 'http://localhost:25545/';
-  const url = base + endpoint;
-
+export async function getData(url: string) {
   const res = await fetch(url, {
     method: 'GET',
     cache: 'no-cache',
@@ -20,10 +17,7 @@ export async function getData(endpoint: string) {
   return await res.json();
 }
 
-export async function postData(endpoint: string, body: FormData | object | string) {
-  const base = 'http://localhost:25545/';
-  const url = base + endpoint;
-
+export async function postData(url: string, body: FormData | object | string) {
   const res = await fetch(url, {
     method: 'POST',
     body: (body instanceof FormData) ? body : JSON.stringify(body),
@@ -37,10 +31,7 @@ export async function postData(endpoint: string, body: FormData | object | strin
   return await res.json();
 }
 
-export async function deleteData(endpoint: string) {
-  const base = 'http://localhost:25545/';
-  const url = base + endpoint;
-
+export async function deleteData(url: string) {
   const res = await fetch(url, {
     method: 'DELETE',
   });

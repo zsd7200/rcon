@@ -10,13 +10,13 @@ export const envVariablesCheck = async () => {
     console.warn('');
     console.warn('ENVIRONMENT VARIABLE(S) MISSING');
     console.warn('MISSING VARIBLE(S) SET RANDOMLY');
-    console.warn('PLEASE CHANGE YOUR .ENV TO MATCH THE BELOW TEXT,');
-    console.warn('THEN RESTART PROGRAM.');
+    console.warn('PLEASE ADD THE BELOW TEXT TO YOUR .env OR,');
+    console.warn('docker-compose.yml FILE, THEN RESTART PROGRAM.');
     console.warn('');
     console.warn(
 `
-CRYPTO_KEY=${process.env.CRYPTO_KEY ?? crypto.randomUUID()}
-CRYPTO_SALT=${process.env.CRYPTO_SALT ?? crypto.randomUUID()}
+CRYPTO_KEY:  ${process.env.CRYPTO_KEY ?? crypto.randomUUID()}
+CRYPTO_SALT: ${process.env.CRYPTO_SALT ?? crypto.randomUUID()}
 `
   );
     console.warn('');

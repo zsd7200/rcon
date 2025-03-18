@@ -55,7 +55,7 @@ export default function RconInterface({ server_id, host, port, password }: RconP
     let rconRes: DbResponse;
 
     try {
-      rconRes = await postData('api/rcon', rconConnectObject);
+      rconRes = await postData('/api/rcon', rconConnectObject);
     } catch (e) {
       const err = e as Error;
       const res = JSON.parse(err.message) as DbResponse;
@@ -72,7 +72,7 @@ export default function RconInterface({ server_id, host, port, password }: RconP
           response: (rconRes.msg.length > 0) ? rconRes.msg : 'no response',
         }
 
-        await postData('api/history', historyObject);
+        await postData('/api/history', historyObject);
         const tempHistList = historyList;
         tempHistList.push(historyObject);
         setHistoryList(tempHistList);
@@ -93,7 +93,7 @@ export default function RconInterface({ server_id, host, port, password }: RconP
   useEffect(() => {
     const getFavoritesList = async () => {
       try {
-        const data: Array<FavoritesRow> = await getData(`api/favorites/server/${server_id}`);
+        const data: Array<FavoritesRow> = await getData(`/api/favorites/server/${server_id}`);
         setFavoritesList(data);
         return data;
       } catch (e) {
@@ -106,7 +106,7 @@ export default function RconInterface({ server_id, host, port, password }: RconP
 
     const getHistoryList = async () => {
       try {
-        const data: Array<HistoryRow> = await getData(`api/history/server/${server_id}/10`);
+        const data: Array<HistoryRow> = await getData(`/api/history/server/${server_id}/10`);
         const reversedData: Array<HistoryRow> = data.reverse(); // need to reverse because API sends it in opposite order of what we want
         setHistoryList(reversedData);
         setHistoryIndex(reversedData.length - 1);
@@ -126,7 +126,6 @@ export default function RconInterface({ server_id, host, port, password }: RconP
       const data = await sendCommand('list', false);
       if (data.status !== 'good') {
         toast(`Error connecting to server via RCON. Error code: ${JSON.parse(data.msg).code}`, getToastStyles('⚠️', currentTheme));
-        console.log('aaa');
         return;
       }
       const resData: ResponseType = {
@@ -196,12 +195,12 @@ export default function RconInterface({ server_id, host, port, password }: RconP
           name: response.cmd.split(' ')[0],
           command: response.cmd,
         }
-        await postData('api/favorites', favoritesObject);
+        await postData('/api/favorites', favoritesObject);
         const tempFavList = [...favoritesList];
         tempFavList.push(favoritesObject);
         setFavoritesList(tempFavList);
       } else {
-        await deleteData(`api/favorites/server/${server_id}/${response.cmd}`);
+        await deleteData(`/api/favorites/server/${server_id}/${response.cmd}`);
         const tempFavList = [...favoritesList];
         tempFavList.splice(tempFavList.findIndex(fav => fav.command === response.cmd), 1);
         setFavoritesList(tempFavList);

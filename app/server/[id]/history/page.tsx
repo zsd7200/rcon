@@ -3,18 +3,20 @@
 import { redirect } from 'next/navigation';
 import { DbResponse, getData } from '@/components/utils/ApiHandler';
 import { ServersRow, HistoryRow } from '@/db/RowTypes';
+import { getUrl } from '@/components/utils/HeaderHandler';
 
 type Params = Promise<{ id: string }>;
 
 export default async function ServerFavorites(props: { params: Params }) {
+  const url = await getUrl();
   const params = await props.params;
-  const servResponse: Array<ServersRow> | DbResponse = await getData(`/api/servers/${params.id}`);
+  const servResponse: Array<ServersRow> | DbResponse = await getData(`${url}/api/servers/${params.id}`);
 
   if (!params?.id || !Array.isArray(servResponse) || servResponse.length === 0) {
     return redirect('/');
   }
 
-  const histResponse: Array<HistoryRow> | DbResponse = await getData(`/api/history/server/${params.id}`);
+  const histResponse: Array<HistoryRow> | DbResponse = await getData(`${url}/api/history/server/${params.id}`);
 
   if (!Array.isArray(histResponse)) {
     return redirect('/');

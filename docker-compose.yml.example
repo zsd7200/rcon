@@ -1,0 +1,12 @@
+services:
+  rcon-web-gui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rcon-web-gui
+    environment:
+      CRYPTO_KEY:  # set this to random string
+      CRYPTO_SALT: # set this to random string
+    ports:
+      - "25545:25545"
+    restart: unless-stopped

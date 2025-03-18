@@ -32,7 +32,7 @@ export default function ServerAdd() {
 
   const postFormData = async (formData: FormData) => {
     setPending(true);
-    const data: DbResponse = await postData('api/servers', formData);
+    const data: DbResponse = await postData('/api/servers', formData);
     setPending(false);
     setName(placeholders.name);
     if (data.status === 'good') {

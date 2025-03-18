@@ -5,12 +5,14 @@ import { DbResponse, getData } from '@/components/utils/ApiHandler';
 import { ServersRow } from '@/db/RowTypes';
 import RconInterface from '@/components/rcon/RconInterface';
 import { decrypt } from '@/components/utils/PasswordOperations';
+import { getUrl } from '@/components/utils/HeaderHandler';
 
 type Params = Promise<{ id: string }>;
 
 export default async function ServerId(props: { params: Params }) {
+  const url = await getUrl();
   const params = await props.params;
-  const response: Array<ServersRow> | DbResponse = await getData(`/api/servers/${params.id}`);
+  const response: Array<ServersRow> | DbResponse = await getData(`${url}/api/servers/${params.id}`);
   if (!params?.id || !Array.isArray(response) || response.length === 0) {
     return redirect('/');
   }

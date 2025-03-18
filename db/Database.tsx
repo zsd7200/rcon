@@ -5,7 +5,7 @@ import path from "node:path";
 import { ServersRow, FavoritesRow, HistoryRow, AliasRow } from "@/db/RowTypes";
 
 const dbConnect = async () => {
-  const filePath = path.join(process.cwd(), 'servers.db');
+  const filePath = path.join(process.cwd(), 'data/servers.db');
   const db = new sqlite3.Database(
     filePath,
     sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
