@@ -19,9 +19,7 @@ git clone https://github.com/zsd7200/rcon.git
 3. Set both `CRYPTO_KEY` and `CRYPTO_SALT` to random strings (wrapped in `""`).
     - If none are provided, the console (`docker logs rcon-web-gui`) will log two UUIDs.
     - It is recommended to save these to your `docker-compose.yml` file and recreate the container (`docker compose up -d`).
-4. [OPTIONAL] Change port bindings if you do not want to host this on port 25545 (default).
-    - e.g. "1234:25545" would allow connection on `http://localhost:1234` rather than `http://localhost:25545`.
-5. Navigate to this repository's directory and run (may take some time on first run):
+4. Navigate to this repository's directory and run (may take some time on first run):
 ```bash
 docker compose up -d
 ```
