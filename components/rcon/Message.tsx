@@ -23,7 +23,7 @@ export type MsgProps = {
 export default function Message({ server_id, msg, cmd, favorite, timestamp, bg }: MsgProps) {
   const { systemTheme, theme } = useTheme();
   const currentTheme = theme === 'system' ? systemTheme : theme;
-  const [fav, setFav] = useState<Boolean>(favorite);
+  const [fav, setFav] = useState<boolean>(favorite);
   const [responseList, setResponseList] = useState<Array<MsgProps>>([]);
   const [favoritesList, setFavoritesList] = useState<Array<FavoritesRow>>([]);
   const bgColor = (bg && bg == 'light')
