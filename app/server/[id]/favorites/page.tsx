@@ -4,6 +4,8 @@ import { redirect } from 'next/navigation';
 import { DbResponse, getData } from '@/components/utils/ApiHandler';
 import { ServersRow, FavoritesRow } from '@/db/RowTypes';
 import { getUrl } from '@/components/utils/HeaderHandler';
+import Link from 'next/link';
+import Message from '@/components/rcon/Message';
 
 type Params = Promise<{ id: string }>;
 
@@ -26,17 +28,35 @@ export default async function ServerFavorites(props: { params: Params }) {
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-center pb-16">
-        <span className="rounded-lg px-4 py-1 bg-gray-100 dark:bg-[#18191B]">{server.name}</span>
-      </h1>
-      {favResponse.map((favorite, i) => (
-        <div key={i} className={`${i % 2 == 0 ? 'bg-[#98C767]' : 'bg-[#7FA656]' } py-2 px-2 my-px rounded-md relative`}>
-          <div className="flex flex-col">
-            <span className="text-wrap break-words pr-6">{favorite.name}</span>
-            <span className="text-xs italic">/{favorite.command}</span>
-          </div>
+      <div className="flex flex-col items-center pb-12">
+        <h1 className="text-2xl font-bold text-center pb-4">
+          <span className="rounded-lg px-4 py-1 bg-gray-100 dark:bg-[#18191B]">{server.name}</span>
+        </h1>
+        <div className="flex gap-x-4">
+          <Link href={`/server/${server.id}`} className="hover:bg-[#98C767] active:bg-[#7FA656] py-2 px-2 my-px rounded-md">
+            <span>
+              Back
+            </span>
+          </Link>
+          <Link href={`/server/${server.id}/history`} className="hover:bg-[#98C767] active:bg-[#7FA656] py-2 px-2 my-px rounded-md">
+            <span>
+              History
+            </span>
+          </Link>
         </div>
-      ))}
+      </div>
+      <div className="flex flex-col w-3/4 xl:w-1/2 mx-auto">
+        {favResponse.map((favorite, i) => (
+          <Message 
+            key={i} 
+            server_id={server.id}
+            msg={favorite.name} 
+            cmd={favorite.command} 
+            favorite={true} 
+            bg={i % 2 == 0 ? 'light' : 'dark'}
+          />
+        ))}
+      </div>
     </>
   );
 };
